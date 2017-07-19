@@ -32,6 +32,7 @@ function playVideoOnScroll(){
   var ultimoScroll = 0,
       intervalRewind;
   var video = document.getElementById('vidFondo');
+  // Quedan comentadadas las lineas relacionadas a la funcionalidad de video ya que en el paquete descargado no se encontraba el recurso multimedia/mp4 necesario
   $(window)
     .scroll((event)=>{
       var scrollActual = $(window).scrollTop();
@@ -53,18 +54,22 @@ playVideoOnScroll();
 
 
 $(document).ready(function() {
+    //Se obtienen todas las ciudades para la etiqueta select
     getAllCities(function(){
         $('#selectCiudad').material_select();
     });
 
+    //Se obtienen todas los tipos para la etiqueta select
     getAllTypes(function(){
         $('#selectTipo').material_select();
     });
 
+    //Accion a ejecutar para mostrar todos los registros
     $('#mostrarTodos').on('click', function() {
         getAllRealStates();
     });
 
+    //Accion a ejecutar para realizar busqueda/filtro
     $('#formulario').submit(submitSearch);
 });
 

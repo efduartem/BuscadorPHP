@@ -15,6 +15,7 @@
       }
   }
 
+  // Funcion que obtiene y devuelve todas las ciudades sin repetirlas
   function getAllCities(){
     $data_file = fopen("./data/data-1.json","r");
     $data_readed = fread($data_file, filesize("./data/data-1.json"));
@@ -31,6 +32,7 @@
     return $cities;
   }
 
+  // Funcion que obtiene y devuelve todos los tipos de propiedades inmobiliarias sin repetirlos
   function getAllTypes(){
     $data_file = fopen("./data/data-1.json","r");
     $data_readed = fread($data_file, filesize("./data/data-1.json"));

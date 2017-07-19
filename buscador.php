@@ -19,6 +19,7 @@
       }
   }
 
+  // Funcion que obtiene y devuelve todos los datos de las propiedades inmobiliarias registradas en el archivo "data/data-1.json"
   function getAllRealStates(){
     $data_file = fopen("./data/data-1.json","r");
     $data_readed = fread($data_file, filesize("./data/data-1.json"));
@@ -27,6 +28,8 @@
     return $data;
   }
 
+  // Funcion que obtiene y devuelve los datos de las propiedades inmobiliarias registradas en el archivo "data/data-1.json"
+  //Segun el filtro especificado en la vista, sean por precio, tipo y/o ciudad.
   function filterResults($precioFrom, $precioTo, $tipo, $ciudad){
     $data_file = fopen("./data/data-1.json","r");
     $data_readed = fread($data_file, filesize("./data/data-1.json"));
