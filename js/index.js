@@ -123,7 +123,20 @@ function getAllRealStates(){
     data:{action:'getAllRealStates'},
     success: function(response){
       if(response){
+
+        //Se setean los select de ciudad y tipo a la primera opcion
+
+        var selectCiudad = $('#selectCiudad');
+        selectCiudad.prop('selectedIndex', 0);
+        selectCiudad.material_select();
+
+        var selectTipo = $('#selectTipo');
+        selectTipo.prop('selectedIndex', 0);
+        selectTipo.material_select();
+
+        //Se remueven todos los resultados que anteriormente pudieron haber sido cargados
         $('.itemMostrado').remove();
+
         $.map(response, function(realState, index){
           var template = '<div class="itemMostrado card">'+
                             '<img src="img/home.jpg" alt="">'+
@@ -171,6 +184,7 @@ function submitSearch(event){
     data:{action:'filterResults', precioFrom:precioFrom, precioTo:precioTo, tipo:tipo, ciudad:ciudad},
     success: function(response){
       if(response){
+        //Se remueven todos los resultados que anteriormente pudieron haber sido cargados
         $('.itemMostrado').remove();
         $.map(response, function(realState, index){
           var template = '<div class="itemMostrado card">'+
