@@ -36,17 +36,164 @@ function playVideoOnScroll(){
     .scroll((event)=>{
       var scrollActual = $(window).scrollTop();
       if (scrollActual > ultimoScroll){
-       video.play();
+      //  video.play();
      } else {
         //this.rewind(1.0, video, intervalRewind);
-        video.play();
+        // video.play();
      }
      ultimoScroll = scrollActual;
     })
     .scrollEnd(()=>{
-      video.pause();
+      // video.pause();
     }, 10)
 }
 
 inicializarSlider();
 playVideoOnScroll();
+
+
+$(document).ready(function() {
+    getAllCities(function(){
+        $('#selectCiudad').material_select();
+    });
+
+    getAllTypes(function(){
+        $('#selectTipo').material_select();
+    });
+
+    $('#mostrarTodos').on('click', function() {
+        getAllRealStates();
+    });
+
+    $('#formulario').submit(submitSearch);
+});
+
+function getAllCities(callback){
+  $.ajax({
+    url: "library.php",
+    dataType: "json",
+    type: 'GET',
+    data:{action:'getAllCities'},
+    success: function(response){
+      $.map(response, function(city){
+        var option = '<option value=":city:">:city:</option>';
+        option = option.replace(':city:', city)
+                        .replace(':city:', city);
+        $('#selectCiudad').append(option);
+      })
+      callback();
+    },
+    error: function(err){
+      console.log(err);
+    }
+  })
+}
+
+function getAllTypes(callback){
+  $.ajax({
+    url: "library.php",
+    dataType: "json",
+    type: 'GET',
+    data:{action:'getAllTypes'},
+    success: function(response){
+      $.map(response, function(type){
+        var option = '<option value=":type:">:type:</option>';
+        option = option.replace(':type:', type)
+                        .replace(':type:', type);
+        $('#selectTipo').append(option);
+      })
+      callback();
+    },
+    error: function(err){
+      console.log(err);
+    }
+  })
+}
+
+function getAllRealStates(){
+  $.ajax({
+    url: "buscador.php",
+    dataType: "json",
+    type: 'GET',
+    data:{action:'getAllRealStates'},
+    success: function(response){
+      if(response){
+        $('.itemMostrado').remove();
+        $.map(response, function(realState, index){
+          var template = '<div class="itemMostrado card">'+
+                            '<img src="img/home.jpg" alt="">'+
+                            '<div class="card-stacked">'+
+                              '<div class="card-content">'+
+                                '<div><b>Direccion: </b>:direccion:</div>'+
+                                '<div><b>Ciudad: </b>:ciudad:</div>'+
+                                '<div><b>Telefono: </b>:telefono:</div>'+
+                                '<div><b>Código postal: </b>:codigoPostal:</div>'+
+                                '<div><b>Precio: </b><span class="precioTexto">:precio:</span></div>'+
+                                '<div><b>Tipo: </b>:tipo:</div>'+
+                              '</div>'+
+                              '<div class="card-action right-align"><a href="#">Ver más</a></div>'+
+                            '</div>'+
+                          '</div>'
+          template = template.replace(':direccion:', realState['Direccion'])
+                             .replace(':ciudad:', realState['Ciudad'])
+                             .replace(':telefono:', realState['Telefono'])
+                             .replace(':codigoPostal:', realState['Codigo_Postal'])
+                             .replace(':precio:', realState['Precio'])
+                             .replace(':tipo:', realState['Tipo'])
+          $('.colContenido').append(template)
+        })
+      }
+    },
+    error: function(err){
+      console.log(err);
+    }
+  })
+}
+
+function submitSearch(event){
+  event.preventDefault()
+  var precio = $('#rangoPrecio').val();
+  var precioFrom = precio.split(";")[0]
+  var precioTo = precio.split(";")[1]
+
+  var tipo = $('#selectTipo').val();
+  var ciudad = $('#selectCiudad').val();
+
+  $.ajax({
+    url: "buscador.php",
+    dataType: "json",
+    type: 'GET',
+    data:{action:'filterResults', precioFrom:precioFrom, precioTo:precioTo, tipo:tipo, ciudad:ciudad},
+    success: function(response){
+      if(response){
+        $('.itemMostrado').remove();
+        $.map(response, function(realState, index){
+          var template = '<div class="itemMostrado card">'+
+                            '<img src="img/home.jpg" alt="">'+
+                            '<div class="card-stacked">'+
+                              '<div class="card-content">'+
+                                '<div><b>Direccion: </b>:direccion:</div>'+
+                                '<div><b>Ciudad: </b>:ciudad:</div>'+
+                                '<div><b>Telefono: </b>:telefono:</div>'+
+                                '<div><b>Código postal: </b>:codigoPostal:</div>'+
+                                '<div><b>Precio: </b><span class="precioTexto">:precio:</span></div>'+
+                                '<div><b>Tipo: </b>:tipo:</div>'+
+                              '</div>'+
+                              '<div class="card-action right-align"><a href="#">Ver más</a></div>'+
+                            '</div>'+
+                          '</div>'
+          template = template.replace(':direccion:', realState['Direccion'])
+                             .replace(':ciudad:', realState['Ciudad'])
+                             .replace(':telefono:', realState['Telefono'])
+                             .replace(':codigoPostal:', realState['Codigo_Postal'])
+                             .replace(':precio:', realState['Precio'])
+                             .replace(':tipo:', realState['Tipo'])
+          $('.colContenido').append(template)
+        })
+      }
+    },
+    error: function(err){
+      console.log(err);
+    }
+  })
+}

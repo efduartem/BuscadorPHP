@@ -132,6 +132,7 @@ video#vidFondo {
 }
 .itemMostrado img{
   width: 35% !important;
+  height: 100%;
 }
 .precioTexto{
   font-size: 1.3rem;
